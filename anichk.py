@@ -1,9 +1,8 @@
 import os
 import hashlib
-import argparse
 
 ANIMAL_LIST = [
-    "Aardvark", "Agouti", "Albatross", "Alpaca", "Anaconda", "Andean Condor", "Andean Mountain Cat", "Angelfish", "Ant", "Anteater", "Antelope", "Ape", "Armadillo", "Ass (Donkey)", "Baboon", "Badger", "Barracuda", "Bass", "Bat", "Bear", "Beaver", "Bee", "Beluga Sturgeon", "Bird", "Bison", "Black Drum", "Black Marlin", "Black Sea Turbot", "Blackbird", "Bluefish", "Boar", "Bobcat", "Bonefish", "Bowfin", "Buffalo", "Bullhead", "Butterfly", "Caiman", "Camel", "Canary", "Capybara", "Caracara", "Carp", "Cat", "Caterpillar", "Catfish", "Cattle", "Chinchilla", "Chimpanzee", "Chipmunk", "Cobia", "Cobra", "Cockroach", "Cod", "Condor", "Conger Eel", "Cougar", "Cow", "Coyote", "Crab", "Crane", "Croaker", "Crocodile", "Crow", "Cusk", "Dab", "Deer", "Dinosaur", "Dog", "Dolphin", "Donkey", "Dove", "Dragonfish", "Duck", "Eagle", "Eel", "Elephant", "Elk", "Emu", "European Anchovy", "Falcon", "Filefish", "Finch", "Fish", "Flounder", "Fly", "Flying Fish", "Fox", "Frog", "Galapagos Giant Tortoise", "Galapagos Penguin", "Gar", "Gazelle", "Gerbil", "Giant Grouper", "Giant Otter", "Gilt-head Bream", "Giraffe", "Goat", "Goblin Shark", "Golden Lion Tamarin", "Goldfish", "Goose", "Gorilla", "Grasshopper", "Guanaco", "Guppy", "Guinea pig", "Haddock", "Hagfish", "Hamster", "Hare", "Hawk", "Hedgehog", "Heron", "Herring", "Hippocampus (Seahorse)", "Hippopotamus", "Horse", "Houndshark", "Hummingbird", "Hyena", "Iguana", "Insect", "Jack Mackerel", "Jackfish", "Jaguar", "Jellyfish", "John Dory", "Kangaroo", "Kelp Perch", "Kinkajou", "Koala", "Koi", "Komodo dragon", "Kookaburra", "Lama", "Lamprey", "Leafcutter Ant", "Lemur", "Leopard", "Lion", "Lizard", "Llama", "Lobster", "Locust", "Loris", "Louse", "Lungfish", "Lyrebird", "Macaw", "Mackerel", "Magpie", "Mammal", "Manatee", "Mantis", "Marmot", "Meerkat", "Mink", "Mole", "Monkfish", "Monkey", "Moose", "Moray Eel", "Mosquito", "Mouse", "Mule", "Mullet", "Newt", "Nightingale", "Ocelot", "Octopus", "Opossum", "Ostrich", "Otter", "Owl", "Ox", "Oyster", "Paca", "Panda", "Parrot", "Partridge", "Peacock", "Pelican", "Penguin", "Perch", "Pickerel", "Pig", "Pike", "Piranha", "Plaice", "Pigeon", "Pony", "Porcupine", "Porpoise", "Prairie dog", "Pufferfish", "Puma", "Quail", "Queen Angelfish", "Quetzal", "Rabbit", "Raccoon", "Rat", "Raven", "Ray", "Red Snapper", "Reindeer", "Reptile", "Rhea", "Rhinoceros", "Ribbonfish", "Robin", "Rodent", "Rooster", "Sablefish", "Sailfish", "Salamander", "Salmon", "Sardine", "Scallop", "Scorpion", "Seahorse", "Seal", "Sea Robin", "Sea Trout", "Shark", "Sheep", "Shrimp", "Skate", "Skunk", "Sloth", "Snail", "Snake", "Snapper", "Sole", "Spectacled Bear", "Spider", "Spotted Catfish", "Squirrel", "Starfish", "Stingray", "Stork", "Sturgeon", "Sucker", "Sunfish", "Swallow", "Swan", "Swordfish", "Tapir", "Tarantula", "Tarpon", "Tench", "Termite", "Thornback Ray", "Tiger", "Tilefish", "Toad", "Tomcod", "Toucan", "Trout", "Tuna", "Turbot", "Turkey", "Turtle", "Vampire Bat", "Vicuna", "Viperfish", "Vulture", "Wallaby", "Walleye", "Walrus", "Wasp", "Weasel", "Whale", "Whitefish", "Wolf", "Wolverine", "Woodpecker", "Worm", "Wrasse", "Yak", "Yellow Perch", "Yellowfin Tuna", "Zebra"
+    "Aardvark", "Agouti", "Albatross", "Alpaca", "Anaconda", "Andean Condor", "Andean Mountain Cat", "Angelfish", "Ant", "Anteater", "Antelope", "Ape", "Armadillo", "Donkey", "Baboon", "Badger", "Barracuda", "Bass", "Bat", "Bear", "Beaver", "Bee", "Beluga Sturgeon", "Bird", "Bison", "Black Drum", "Black Marlin", "Black Sea Turbot", "Blackbird", "Bluefish", "Boar", "Bobcat", "Bonefish", "Bowfin", "Buffalo", "Bullhead", "Butterfly", "Caiman", "Camel", "Canary", "Capybara", "Caracara", "Carp", "Cat", "Caterpillar", "Catfish", "Cattle", "Chinchilla", "Chimpanzee", "Chipmunk", "Cobia", "Cobra", "Cockroach", "Cod", "Condor", "Conger Eel", "Cougar", "Cow", "Coyote", "Crab", "Crane", "Croaker", "Crocodile", "Crow", "Cusk", "Dab", "Deer", "Dinosaur", "Dog", "Dolphin", "Donkey", "Dove", "Dragonfish", "Duck", "Eagle", "Eel", "Elephant", "Elk", "Emu", "Anchovy", "Falcon", "Filefish", "Finch", "Fish", "Flounder", "Fly", "Flying Fish", "Fox", "Frog", "Galapagos Giant Tortoise", "Galapagos Penguin", "Gar", "Gazelle", "Gerbil", "Giant Grouper", "Giant Otter", "Gilt-head Bream", "Giraffe", "Goat", "Goblin Shark", "Golden Lion Tamarin", "Goldfish", "Goose", "Gorilla", "Grasshopper", "Guanaco", "Guppy", "Guinea pig", "Haddock", "Hagfish", "Hamster", "Hare", "Hawk", "Hedgehog", "Heron", "Herring", "Hippocampus", "Hippopotamus", "Horse", "Houndshark", "Hummingbird", "Hyena", "Iguana", "Insect", "Jack Mackerel", "Jackfish", "Jaguar", "Jellyfish", "John Dory", "Kangaroo", "Kelp Perch", "Kinkajou", "Koala", "Koi", "Komodo dragon", "Kookaburra", "Lama", "Lamprey", "Leafcutter Ant", "Lemur", "Leopard", "Lion", "Lizard", "Llama", "Lobster", "Locust", "Loris", "Louse", "Lungfish", "Lyrebird", "Macaw", "Mackerel", "Magpie", "Mammal", "Manatee", "Mantis", "Marmot", "Meerkat", "Mink", "Mole", "Monkfish", "Monkey", "Moose", "Moray Eel", "Mosquito", "Mouse", "Mule", "Mullet", "Newt", "Nightingale", "Ocelot", "Octopus", "Opossum", "Ostrich", "Otter", "Owl", "Ox", "Oyster", "Paca", "Panda", "Parrot", "Partridge", "Peacock", "Pelican", "Penguin", "Perch", "Pickerel", "Pig", "Pike", "Piranha", "Plaice", "Pigeon", "Pony", "Porcupine", "Porpoise", "Prairie dog", "Pufferfish", "Puma", "Quail", "Queen Angelfish", "Quetzal", "Rabbit", "Raccoon", "Rat", "Raven", "Ray", "Red Snapper", "Reindeer", "Reptile", "Rhea", "Rhinoceros", "Ribbonfish", "Robin", "Rodent", "Rooster", "Sablefish", "Sailfish", "Salamander", "Salmon", "Sardine", "Scallop", "Scorpion", "Seahorse", "Seal", "Sea Robin", "Sea Trout", "Shark", "Sheep", "Shrimp", "Skate", "Skunk", "Sloth", "Snail", "Snake", "Snapper", "Sole", "Spectacled Bear", "Spider", "Spotted Catfish", "Squirrel", "Starfish", "Stingray", "Stork", "Sturgeon", "Sucker", "Sunfish", "Swallow", "Swan", "Swordfish", "Tapir", "Tarantula", "Tarpon", "Tench", "Termite", "Thornback Ray", "Tiger", "Tilefish", "Toad", "Tomcod", "Toucan", "Trout", "Tuna", "Turbot", "Turkey", "Turtle", "Vampire Bat", "Vicuna", "Viperfish", "Vulture", "Wallaby", "Walleye", "Walrus", "Wasp", "Weasel", "Whale", "Whitefish", "Wolf", "Wolverine", "Woodpecker", "Worm", "Wrasse", "Yak", "Yellow Perch", "Yellowfin Tuna", "Zebra"
 ]
 
 ADJECTIVE_LIST = [
@@ -15,10 +14,7 @@ def calculate_checksum(path):
         if os.path.isfile(path):
             hasher = hashlib.sha256()
             with open(path, 'rb') as file:
-                while True:
-                    chunk = file.read(4096)
-                    if not chunk:
-                        break
+                while chunk := file.read(4096):
                     hasher.update(chunk)
             return hasher.hexdigest()
         elif os.path.isdir(path):
@@ -28,68 +24,74 @@ def calculate_checksum(path):
                 if os.path.isfile(filepath):
                     hasher.update(filename.encode('utf-8'))
                     with open(filepath, 'rb') as file:
-                        while True:
-                            chunk = file.read(4096)
-                            if not chunk:
-                                break
+                        while chunk := file.read(4096):
                             hasher.update(chunk)
             return hasher.hexdigest()
         else:
-            print(f"Error: Path '{path}' is not a file or directory.")
-            return None
+            raise ValueError(f"Path '{path}' is not a file or directory.")
     except (IOError, OSError) as e:
-        print(f"Error reading path '{path}': {e}")
-        return None
+        raise RuntimeError(f"Error reading path '{path}': {e}")
+
+def calculate_combined_checksum(paths):
+    try:
+        hasher = hashlib.sha256()
+        for path in sorted(paths):  # Sort paths for consistent results
+            if os.path.isfile(path):
+                with open(path, 'rb') as file:
+                    while chunk := file.read(4096):
+                        hasher.update(chunk)
+            elif os.path.isdir(path):
+                for root, _, files in os.walk(path):
+                    for filename in sorted(files):  # Sort files for consistent results
+                        filepath = os.path.join(root, filename)
+                        if os.path.isfile(filepath):
+                            hasher.update(filepath.encode('utf-8'))  # Include file paths
+                            with open(filepath, 'rb') as file:
+                                while chunk := file.read(4096):
+                                    hasher.update(chunk)
+            else:
+                raise ValueError(f"Path '{path}' is not valid.")
+        return hasher.hexdigest()
+    except (IOError, OSError) as e:
+        raise RuntimeError(f"Error processing paths: {e}")
 
 def get_word_from_list(word_list, index):
-    try:
-        if 0 <= index < len(word_list):
-            return word_list[index]
-        else:
-            print(f"Error: Index {index} is out of range for the word list.")
-            return None
-    except Exception as e:
-        print(f"Error accessing word list: {e}")
-        return None
+    if 0 <= index < len(word_list):
+        return word_list[index]
+    raise IndexError(f"Index {index} is out of range for the word list.")
 
 def count_lines(word_list):
     return len(word_list)
 
-def main():
-    parser = argparse.ArgumentParser(description="Generate a phrase based on a file or directory checksum.")
-    parser.add_argument('path', metavar='path', type=str, help="Path to the file or directory")
+def get_animal_name(paths):
+    """Generate an animal name based on a combined checksum of files or directories."""
+    combined_checksum = calculate_combined_checksum(paths)
+    if combined_checksum:
+        checksum_int = int(combined_checksum, 16)
+        
+        animal_list_length = count_lines(ANIMAL_LIST)
+        adjective_list_length = count_lines(ADJECTIVE_LIST)
+
+        animal_index = checksum_int % animal_list_length
+        adjective_index = (checksum_int // animal_list_length) % adjective_list_length
+
+        animal = get_word_from_list(ANIMAL_LIST, animal_index)
+        adjective = get_word_from_list(ADJECTIVE_LIST, adjective_index)
+
+        return f"{adjective} {animal}"
+    else:
+        raise ValueError("Checksum calculation failed.")
+
+# Example usage when imported
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Generate a phrase based on a combined checksum of files or directories.")
+    parser.add_argument('paths', metavar='path', type=str, nargs='+', help="Paths to the files or directories")
     args = parser.parse_args()
 
-    path_to_check = args.path
-    checksum = calculate_checksum(path_to_check)
-
-    if checksum:
-        print(f"SHA-256 Checksum: {checksum}")
-
-        try:
-            checksum_int = int(checksum, 16)
-            
-            animal_list_length = count_lines(ANIMAL_LIST)
-            adjective_list_length = count_lines(ADJECTIVE_LIST)
-
-            if animal_list_length is None or adjective_list_length is None:
-                return  # Stop if there is an error with the lists
-
-            animal_index = checksum_int % animal_list_length
-            adjective_index = (checksum_int // animal_list_length) % adjective_list_length
-
-            animal = get_word_from_list(ANIMAL_LIST, animal_index)
-            adjective = get_word_from_list(ADJECTIVE_LIST, adjective_index)
-
-            if animal and adjective:
-                print(f"Animal generated: {adjective} {animal}")
-
-        except ValueError:
-            print("Error: Could not convert checksum to integer.")
-        except ZeroDivisionError:
-            print("Error: Animal list is empty, cannot divide.")
-    else:
-        print("Checksum calculation failed.")
-
-if __name__ == "__main__":
-    main()
+    try:
+        result = get_animal_name(args.paths)
+        print(f"Generated Animal: {result}")
+    except Exception as e:
+        print(f"Error: {e}")
