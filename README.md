@@ -1,2 +1,2 @@
-# anichk
-A tool to generate phrases based on file or directory checksum like ubuntu versions
+# AniChk
+A tool that uses SHA-256 Hashing to create a name composed by a animal name and a adjetive
