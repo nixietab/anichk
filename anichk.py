@@ -82,7 +82,19 @@ def get_animal_name(paths):
     else:
         raise ValueError("Checksum calculation failed.")
 
-# Example usage when imported
+def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Generate a phrase based on a combined checksum of files or directories.")
+    parser.add_argument('paths', metavar='path', type=str, nargs='+', help="Paths to the files or directories")
+    args = parser.parse_args()
+
+    try:
+        result = get_animal_name(args.paths)
+        print(f"Generated Animal: {result}")
+    except Exception as e:
+        print(f"Error: {e}")
+
 if __name__ == "__main__":
     import argparse
 
